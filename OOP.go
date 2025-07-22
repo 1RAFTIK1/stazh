@@ -37,6 +37,9 @@ type DeleteCommand struct {
 	name string
 	fs   *flag.FlagSet
 }
+// type HelpCommand struct{
+// 	fs *flag.FlagSet
+// }
 
 func printWelcome() {
 	fmt.Println("Добро поджаловать в gogomts, CLI инструмент для управления профилями")
@@ -53,6 +56,29 @@ func printHelp() {
 	Пример использования:
   ./gogomts profile create --name=test --user=example --project=new-project`)
 }
+
+// func (c *HelpCommand) Name() string {
+// 	return "help"
+// }
+
+// func (c *HelpCommand) ParseFlags(args []string) error {
+// 	c.fs = flag.NewFlagSet("help", flag.ExitOnError)
+// 	return c.fs.Parse(args)
+// }
+
+// func (c *HelpCommand) Execute() error{
+// 	fmt.Println(`Доступные комманды:
+//   profile create --name=<name> --user=<user> --project=<project> - Создание нового профиля
+//   profile get --name=<name>                                      - Вывидение информации о профиле
+//   profile list                                                   - Список профилей
+//   profile delete --name=<name>                                   - Удалить профиль
+
+// 	Пример использования:
+//   ./gogomts profile create --name=test --user=example --project=new-project`)
+// fmt.Println("Доступные профили:")
+//   return nil
+// }
+
 
 func (c *CreateCommand) Name() string {
 	return "create"
@@ -184,12 +210,20 @@ func main() {
 		"get":    &GetCommand{},
 		"list":   &ListCommand{},
 		"delete": &DeleteCommand{},
+		// "help":   &HelpCommand{},
 	}
-	if os.Args[1] != "profile" {
-		fmt.Printf("неизвестная командп: %s\n", os.Args[1])
+
+	if os.Args[1] == "help" {
 		printHelp()
 		os.Exit(1)
 	}
+
+	if os.Args[1] != "profile"{
+	 		fmt.Printf("неизвестная командп: %s\n", os.Args[1])
+	 		printHelp()
+	 		os.Exit(1)
+	 	}
+
 	if len(os.Args) < 3 {
 		fmt.Println("Пожалуйста укажите действие с профилем")
 		printHelp()
